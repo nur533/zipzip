@@ -1,0 +1,16 @@
+Tesseract.js is an open-source JavaScript library that gets words in almost any language out of images.
+It is made via an Emscripten port of the famous Tesseract OCR Engine written in C and C++: https://en.wikipedia.org/wiki/Tesseract_(software)
+
+Source-code for third-party libraries included in this package (in data/ocr/resources/ folder) are as following:
+1) "index.js" is downloaded from: "https://cdn.rawgit.com/naptha/tesseract.js-core/0.1.0/index.js"
+2) "worker.js" is downloaded from: "https://cdn.rawgit.com/naptha/tesseract.js/1.0.10/dist/worker.js"
+3) "tesseract.js" is downloaded from: "https://raw.githubusercontent.com/naptha/tesseract.js/master/dist/tesseract.js"
+
+Note #1: "Eval" function is used in "data/ocr/resources/index.js" which is the core file for the OCR operation. Currently, there is no other libraries for the OCR operation in the browser except "Tesseract.js". This is the reason for using "unsafe-eval" content security policy in the add-on.
+
+Note #2: this addon uses: "https://github.com/naptha/tessdata/tree/gh-pages/3.02"
+GitHub repo in order to fetch language data required for the OCR operation. Language data packs are very large in size and cannot be included in the addon’s package.
+
+Language data URLs are made and fetched by adding the language code to the above URL: 
+"https://cdn.rawgit.com/naptha/tessdata/gh-pages/3.02/(language-code).traineddata.gz"
+For example for English pack, the URL is: https://cdn.rawgit.com/naptha/tessdata/gh-pages/3.02/eng.traineddata.gz

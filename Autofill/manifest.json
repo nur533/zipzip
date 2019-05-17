@@ -1,0 +1,58 @@
+{
+"update_url": "https://clients2.google.com/service/update2/crx",
+
+    "name": "Super Tatkal",
+    "short_name": "IRCTC Tatkal Auto fill",
+    "version": "0.1.7",
+    "manifest_version": 2,
+    "description": "A auto-fill extension to process IRCTC Tatkaal booking to avoid user form entry at Tatkaal booking. by [http://patelworld.in]",
+    "icons": {
+        "16": "images/icons/icon-16.png",
+        "32": "images/icons/icon-32.png",
+        "48": "images/icons/icon-48.png",
+        "64": "images/icons/icon-64.png",
+        "128": "images/icons/icon-128.png"
+    },
+    "browser_action": {
+        "default_title": "IRCTC Tatkal Booking",
+        "default_popup": "html/popup.html"
+    },
+    "permissions": [
+        "tabs",
+        "storage",
+        "activeTab",
+        "https://cdn.rawgit.com/naptha/tesseract.js/1.0.10/dist/tesseract.js",
+        "/resources/tesseract.js"
+
+    ],
+    "background": {
+        "scripts": [
+            "js/jquery-3.3.1.min.js",
+            "js/background.js"
+        ],
+        "persistent": false
+    },
+    "content_scripts": [{
+        "run_at": "document_end",
+        "matches": ["https://*/*", "http://*/*","file://*"],
+        "js": [
+            "js/jquery-3.3.1.min.js",
+            "js/constant.js",
+            "js/trains.js",
+            "js/booking_bot.js",
+            "/resources/index.js",
+            "/resources/tesseract.js"
+        ],
+        "css": ["css/custom-style.min.css"]
+    }],
+    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+
+    "web_accessible_resources": [  
+        "data/info.json",
+        "/resources/tesseract.js",
+         "/resources/worker.js",
+          "/resources/index.js",
+          "https://cdn.rawgit.com/naptha/tesseract.js/1.0.10/dist/tesseract.js"
+    ]
+
+}

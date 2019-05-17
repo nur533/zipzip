@@ -1,0 +1,73 @@
+<form id="imgur1">
+    <input type="file" class="imgur1" accept="image/*" data-max-size="5000" />
+</form>
+<div id="newimgurl">
+  <p><strong>New Image URL: <a href="" id="newimgurllink"></a></strong></p>
+</div>
+
+<div class="form-group col-md-4">
+   <label for="plink1" class="col-form-label col-form-label-sm ">Photo Link</label>
+   <input type="text" class="form-control form-control-sm" id="plink1" name="plink1"  >
+</div>
+<div class="form-group col-md-4">
+   <label for="plink2" class="col-form-label col-form-label-sm ">Signature Link</label>
+   <input type="text" class="form-control form-control-sm" id="plink2" name="plink2"  >
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
+<script>
+    $("document").ready(function () {
+
+        $('input[type=file]').on("change", function () {
+
+            var $files = $(this).get(0).files;
+
+            if ($files.length) {
+
+                // Reject big files
+                if ($files[0].size > $(this).data("max-size") * 1024) {
+                    console.log("Please select a smaller file");
+                    return false;
+                }
+
+                // Replace ctrlq with your own API key
+                var apiUrl = 'https://api.imgur.com/3/image';
+                var apiKey = '80774f15d400aa0';
+
+                var formData = new FormData();
+                formData.append("image", $files[0]);
+
+                var settings = {
+                    "async": true,
+                    "crossDomain": true,
+                    "url": apiUrl,
+                    "method": "POST",
+                    "datatype": "json",
+                    "headers": {
+                        "Authorization": "Client-ID " + apiKey
+                    },
+                    "processData": false,
+                    "contentType": false,
+                    "data": formData,
+                    beforeSend: function (xhr) {
+                        console.log("Uploading");
+                    },
+                    success: function (res) {
+                        console.log(res.data.link);
+                      //  $('body').append('<img src="' + res.data.link + '" />');
+                      //  $('#newimgurllink').append(res.data.link );
+                        $('#newimgurllink').html(res.data.link).attr('href', res.data.link);
+
+                        $('#plink1').val(res.data.link);
+                    },
+                    error: function () {
+                        alert("Failed");
+                    }
+                }
+                $.ajax(settings).done(function (response) {
+                    console.log("Done ");
+                });
+            }
+        });
+    });
+</script>
